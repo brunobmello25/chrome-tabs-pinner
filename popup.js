@@ -1,3 +1,13 @@
+function getUrlsFromTextArea() {
+  const textareaValue = document.getElementById('urls').value;
+  const urls = textareaValue.split('\n');
+  return urls
+}
+
+function storeUrls(urls) {
+  chrome.storage.sync.set({ 'storedUrls': urls });
+}
+
 window.onload = function () {
   chrome.storage.sync.get('storedUrls', function (data) {
     if (data.storedUrls) {
@@ -6,11 +16,13 @@ window.onload = function () {
   });
 };
 
-document.getElementById('openAndPin').addEventListener('click', function () {
-  const textareaValue = document.getElementById('urls').value;
-  const urls = textareaValue.split('\n');
+document.getElementById('store').addEventListener('click', function () {
+  const urls = getUrlsFromTextArea()
+  storeUrls(urls)
+})
 
-  chrome.storage.sync.set({ 'storedUrls': urls });
+document.getElementById('openAndPin').addEventListener('click', function () {
+  const urls = getUrlsFromTextArea()
 
   for (let url of urls) {
     // Check if the URL is valid.
@@ -22,13 +34,6 @@ document.getElementById('openAndPin').addEventListener('click', function () {
   // Close the popup after the action.
   window.close();
 });
-
-// on close
-window.onbeforeunload = function () {
-  // store the urls
-  const textareaValue = document.getElementById('urls').value;
-  chrome.storage.sync.set({ 'storedUrls': textareaValue.split('\n') });
-}
 
 function isValidURL(string) {
   try {

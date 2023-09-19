@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "AutoPin Google Calendar",
+  "name": "AutoPin Chrome Tabs",
   "version": "1.0",
   "description": "Automatically opens and pins Chrome tabs for given urls.",
   "permissions": [
